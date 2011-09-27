@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+  <remote  name="cros-internal"
+           fetch="ssh://gerrit-int.chromium.org:29419"
+           review="gerrit-int.chromium.org" />
+
+  <project remote="cros-internal"
+           path="src/private-overlays/chromeos-partner-overlay"
+           name="chromeos/overlays/chromeos-partner-overlay" />
+
+  <project remote="cros-internal"
+           path="src/private-overlays/overlay-x86-zgb-private"
+           name="chromeos/overlays/overlay-x86-zgb-private" />
+
+</manifest>

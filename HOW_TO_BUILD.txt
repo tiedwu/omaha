@@ -1,0 +1,52 @@
+HOW TO BUILD ZGB FACTORY SUITE
+
+Currently the ZGB factory images are based from "factory-980.B" branch.
+To build that:
+
+1. Create a new directory for the factory branch. Please change the name to
+   whatever you like:
+
+    mkdir chromeos-factory-980 && cd chromeos-factory-980
+
+2. Initialize a new checkout with the factory branch specified:
+
+    repo init -m minilayout.xml -b factory-980.B \
+              -u http://git.chromium.org/chromiumos/manifest.git
+
+3. Copy the "local_manifest.xml" from factory bundle into .repo folder:
+
+    cp PATH_TO_BUNDLE/local_manifest.xml .repo/local_manifest.xml
+
+4. Check that your ssh key is being managed by your ssh agent:
+
+    ssh-add -L
+
+    If your key is not listed, do "ssh-add ~/.ssh/chromium" (change the path if
+    needed to point to your private ssh key used for Chrome OS) If you get a
+    "can't open a connection to your ssh agent" message, do "ssh-agent bash"
+    then add your key.
+
+5. Sync the code:
+
+    repo sync
+
+    You may try "repo sync -j 8" to sync faster.
+
+6. Build choot environment (this is the same as any Chrome OS build):
+
+    cros_sdk --download
+    cros_sdk  # enter chroot
+
+    (cros_sdk is a command in your depot_tools folder, or use
+     chromite/bin/cros_sdk)
+
+7. Build ChromiumOS (factory) images (same as ChromeOS build):
+
+    (in chroot) cd ~/trunk/src/scripts
+    ./set_shared_user_password.sh  # only need to do this one time
+    ./setup_board --board=x86-zgb --default
+    ./build_packages --noenabledebug
+    ./build_image --noenable_rootfs_verification --factory
+
+    Your factory test image will be located in
+    ../build/images/x86-zgb/latest/chromiumos_factory_image.bin
